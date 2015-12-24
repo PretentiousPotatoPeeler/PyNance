@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="saldo">
+    Loading saldo...
+</div>
+<div class="chart">
+    loading chart...
+</div>
+<button value="Update Transactions" onclick="update_transactions(true)">Update Transactions</button>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <td width="100">Date</td>
+        <td>Amount</td>
+        <td>Type</td>
+        <td>Description</td>
+    </tr>
+    </thead>
+    <tbody id="transactions">
+
+    </tbody>
+</table>
+<button onclick="more_transactions()">Load More</button>
+<script>
+    $(document).ready(function () {
+        update_transactions(false);
+        $.getJSON('/api/get_saldo', function (data) {
+            $('.saldo').html("Saldo: " + data.ing_saldo);
+        });
+        $.get('/api/chart/current_month', function (data) {
+            console.log(data);
+            $('.chart').innerHTML = data;
+        });
+    });
+
+    transaction_page = 1;
+    transactions_per_page = 20;
+
+    function more_transactions() {
+        $(this).html("loading...");
+        $.get("/api/get_transactions/" +
+                "" + transaction_page * transactions_per_page + "/" +
+                "" + (transaction_page + 1) * transactions_per_page, function (data) {
+            transaction_page++;
+            $.each(data.json_list, function (index, value) {
+                $('#transactions').append('' +
+                        '<tr>' +
+                        '<td>' + value.date + '</td>' +
+                        '<td>' + value.amount + '</td>' +
+                        '<td>' + value.type + '</td>' +
+                        '<td>' + value.description + '</td>' +
+                        '</tr>'
+                )
+            });
+            $(this).html("Load More");
+        })
+    }
+
+    function update_transactions(update) {
+        $('#transactions').html("loading...");
+        var url = "";
+        if (update) {
+            url = "/api/update_database";
+        } else {
+            url = "/api/get_transactions/0/20"
+        }
+
+        $.get(url, function (data) {
+            $('#transactions').html("");
+            $.each(data.json_list, function (index, value) {
+                $('#transactions').append('' +
+                        '<tr>' +
+                        '<td>' + value.date + '</td>' +
+                        '<td>' + value.amount + '</td>' +
+                        '<td>' + value.type + '</td>' +
+                        '<td>' + value.description + '</td>' +
+                        '</tr>'
+                )
+            });
+            transaction_page = 1;
+        })
+    }
+</script>
+{% endblock %}

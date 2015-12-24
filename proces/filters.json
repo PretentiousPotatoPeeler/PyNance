@@ -1,0 +1,28 @@
+[
+  {
+    "name": "stufi",
+    "filters": {
+      "type": [
+        "e",
+        "OV"
+      ],
+      "Omschrijving": [
+        "c",
+        "Studiefinanciering"
+      ]
+    }
+  },
+  {
+    "name": "Albert Heijn",
+    "filters": {
+      "type": [
+        "e",
+        "BA"
+      ],
+      "description": [
+        "c",
+        "Albert Heijn"
+      ]
+    }
+  }
+]

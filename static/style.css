@@ -1,0 +1,19 @@
+.saldo {
+    margin: 7px;
+    font-size: 41px;
+    padding-bottom: 10px;
+}
+
+#header {
+    background-color: dodgerblue;
+    height: 200px;
+    color:white;
+    font-family: Ubuntu, serif;
+    font-size:40px;
+    padding-top: 30px;
+}
+
+body {
+    width: 900px;
+    margin:auto;
+}
